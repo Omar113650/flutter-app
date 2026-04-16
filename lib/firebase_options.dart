@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '654585260888',
     projectId: 'task-managment-a4ed2',
     storageBucket: 'task-managment-a4ed2.firebasestorage.app',
+    iosClientId: '654585260888-0fga235v4mb562mlhu7c08ubqvqj40dm.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
@@ -76,6 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '654585260888',
     projectId: 'task-managment-a4ed2',
     storageBucket: 'task-managment-a4ed2.firebasestorage.app',
+    iosClientId: '654585260888-0fga235v4mb562mlhu7c08ubqvqj40dm.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
+
 }

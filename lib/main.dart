@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFF3F3387),
         scaffoldBackgroundColor: const Color(0xFF050507),
       ),
-      home: const AuthGate(),   // ← غيرنا initialRoute إلى AuthGate
+      home: const AuthGate(), // ← غيرنا initialRoute إلى AuthGate
       routes: {
         '/sign_in': (context) => const LoginScreen(),
         '/sign_up': (context) => const RegisterScreen(),
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ===================== Auth Gate (الأهم) =====================
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -57,15 +55,12 @@ class AuthGate extends StatelessWidget {
           );
         }
 
-        // لو المستخدم مسجل دخول → روح على MainScreen
         if (snapshot.hasData) {
           return const MainScreen();
         }
 
-        // لو مش مسجل → روح على Splash أو Sign In
         return const SplashScreen();
       },
     );
   }
 }
-

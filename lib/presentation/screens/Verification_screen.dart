@@ -23,7 +23,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   final String phoneNumber = "+201065466184";
 
-  // ✅ الكود الثابت
   final String testCode = "123456";
 
   @override
@@ -48,9 +47,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     super.dispose();
   }
 
-  // 🔥 FAKE SEND OTP
   Future<void> sendOTP(String phone) async {
-    print("🚀 Fake OTP sent to: $phone");
+    print(" Fake OTP sent to: $phone");
 
     setState(() {
       verificationId = "test_verification_id";
@@ -64,7 +62,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 
-  // ⏱ TIMER
   void startTimer() {
     timer?.cancel();
 
@@ -84,7 +81,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     });
   }
 
-  // 🔥 VERIFY (MANUAL)
   void verify() async {
     String code = controllers.map((e) => e.text).join();
 
@@ -115,7 +111,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  // 🔁 RESEND
   void resend() {
     for (var c in controllers) {
       c.clear();

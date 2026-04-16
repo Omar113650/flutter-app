@@ -63,5 +63,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-// استخدم نفس AppLogo اللي موجود عندك

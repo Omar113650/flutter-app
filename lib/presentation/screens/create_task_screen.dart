@@ -164,7 +164,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
 
       if (!mounted) return;
 
-      // إظهار رسالة النجاح
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -174,9 +173,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
         ),
       );
 
-      // ====================== الجزء المهم: تفريغ الحقول ======================
       if (!isEditing) {
-        // تفريغ كل الحقول فقط في حالة Create (مش Edit)
         setState(() {
           name = '';
           workType = '';
@@ -189,10 +186,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
           fileBytes = null;
         });
 
-        // إعادة تهيئة الـ Form
         _formKey.currentState?.reset();
       }
-      // =====================================================================
 
       await Future.delayed(const Duration(milliseconds: 600));
 
@@ -208,7 +203,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
       }
     }
   }
-  // ============================================================
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +276,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
 
                   const SizedBox(height: 16),
 
-                  // Start Date
                   ListTile(
                     tileColor: surface,
                     shape: RoundedRectangleBorder(
@@ -305,7 +298,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen>
 
                   const SizedBox(height: 12),
 
-                  // End Date
                   ListTile(
                     tileColor: surface,
                     shape: RoundedRectangleBorder(

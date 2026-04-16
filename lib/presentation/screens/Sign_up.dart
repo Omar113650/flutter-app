@@ -100,84 +100,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       );
 
-  // ===================== Firebase Register =====================
- void _register() async {
-  if (!_formKey.currentState!.validate()) return;
+  void _register() async {
+    if (!_formKey.currentState!.validate()) return;
 
-  try {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: _emailCtrl.text.trim(),
-      password: _passCtrl.text.trim(),
-    );
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully!'),
-          backgroundColor: cPrimary,
-        ),
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailCtrl.text.trim(),
+        password: _passCtrl.text.trim(),
       );
-    }
 
-    await Future.delayed(const Duration(milliseconds: 1200));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully!'),
+            backgroundColor: cPrimary,
+          ),
+        );
+      }
 
-    if (mounted) {
-      Navigator.pushReplacementNamed(context, '/verification');
-    }
-  }
+      await Future.delayed(const Duration(milliseconds: 1200));
 
-  // ✅ أخطاء Firebase المعروفة
-  on FirebaseAuthException catch (e) {
-    print("🔥 Firebase Error Code: ${e.code}");
-    print("🔥 Firebase Error Message: ${e.message}");
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/verification');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
 
-    if (!mounted) return;
+      String message = 'Something went wrong';
 
-    String message = 'Something went wrong';
+      switch (e.code) {
+        case 'email-already-in-use':
+          message = 'This email is already in use';
+          break;
+        case 'invalid-email':
+          message = 'Invalid email address';
+          break;
+        case 'weak-password':
+          message = 'Password is too weak (use at least 6 characters)';
+          break;
+        case 'operation-not-allowed':
+          message = 'Email/Password registration is not enabled';
+          break;
+        case 'network-request-failed':
+          message = 'Check your internet connection';
+          break;
+        default:
+          message = e.message ?? 'Registration failed';
+      }
 
-    switch (e.code) {
-      case 'email-already-in-use':
-        message = 'This email is already in use';
-        break;
-      case 'invalid-email':
-        message = 'Invalid email address';
-        break;
-      case 'weak-password':
-        message = 'Password is too weak (use at least 6 characters)';
-        break;
-      case 'operation-not-allowed':
-        message = 'Email/Password registration is not enabled';
-        break;
-      case 'network-request-failed':
-        message = 'Check your internet connection';
-        break;
-      default:
-        message = e.message ?? 'Registration failed';
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-
-  // ❗ أي Error تاني (زي اللي عندك)
-  catch (e) {
-    print("🔥 ERROR TYPE: ${e.runtimeType}");
-    print("🔥 ERROR DETAILS: $e");
-
-    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: $e'),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +173,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            /// Header
             Container(
               padding: const EdgeInsets.only(top: 40, bottom: 20),
               child: Column(
@@ -212,8 +198,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
             ),
-
-            /// Form
             Expanded(
               child: SingleChildScrollView(
                 keyboardDismissBehavior:
@@ -241,7 +225,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               v!.isEmpty ? 'Enter your name' : null,
                         ),
                         const SizedBox(height: 16),
-
                         _label('Email Address'),
                         TextFormField(
                           controller: _emailCtrl,
@@ -253,7 +236,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               v!.contains('@') ? null : 'Invalid email',
                         ),
                         const SizedBox(height: 16),
-
                         _label('Phone Number'),
                         TextFormField(
                           controller: _phoneCtrl,
@@ -265,7 +247,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               v!.length < 11 ? 'Invalid phone number' : null,
                         ),
                         const SizedBox(height: 16),
-
                         _label('Password'),
                         TextFormField(
                           controller: _passCtrl,
@@ -279,15 +260,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                               ),
-                              onPressed: () => setState(
-                                  () => _obscurePass = !_obscurePass),
+                              onPressed: () =>
+                                  setState(() => _obscurePass = !_obscurePass),
                             ),
                           ),
                           validator: (v) =>
                               v!.length < 8 ? 'Minimum 8 characters' : null,
                         ),
                         const SizedBox(height: 16),
-
                         _label('Confirm Password'),
                         TextFormField(
                           controller: _confirmCtrl,
@@ -301,16 +281,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                               ),
-                              onPressed: () => setState(() =>
-                                  _obscureConfirm = !_obscureConfirm),
+                              onPressed: () => setState(
+                                  () => _obscureConfirm = !_obscureConfirm),
                             ),
                           ),
-                          validator: (v) =>
-                              v != _passCtrl.text ? 'Passwords do not match' : null,
+                          validator: (v) => v != _passCtrl.text
+                              ? 'Passwords do not match'
+                              : null,
                         ),
-
                         const SizedBox(height: 32),
-
                         SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -330,9 +309,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 24),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(

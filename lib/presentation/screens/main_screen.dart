@@ -1,4 +1,3 @@
-// presentation/screens/main_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,14 +19,12 @@ class _MainScreenState extends State<MainScreen> {
     TasksListScreen(),
   ];
 
-  // Logout مع تحسين
   Future<void> logout() async {
     try {
       await FirebaseAuth.instance.signOut();
 
       if (!mounted) return;
 
-      // نرجع لصفحة تسجيل الدخول (Sign In) مش Register
       Navigator.pushReplacementNamed(context, '/sign_in');
     } catch (e) {
       if (mounted) {
@@ -54,7 +51,6 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: const Color(0xFF3F3387),
         elevation: 2,
         actions: [
-          // عرض الإيميل أو اسم المستخدم
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Center(
@@ -74,10 +70,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-
       body: pages[currentIndex],
-
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
@@ -98,8 +91,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-
-      // Floating Action Button - يظهر فقط في صفحة Tasks
       floatingActionButton: currentIndex == 1
           ? FloatingActionButton(
               onPressed: () {
